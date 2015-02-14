@@ -1,0 +1,29 @@
+{
+  "name": "ArmasSalesTrackerWebsite",
+  "version": "1.0.0",
+  "description": "Source code for the ARMAS sales tracker website",
+  "main": "App/index.html",
+  "scripts": {
+    "test": "exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asser-dk/ArmasSalesTrackerWebsite.git"
+  },
+  "keywords": [
+    "ARMAS",
+    "APB",
+    "APBReloaded",
+    "Asser",
+    "SexyFishHorse"
+  ],
+  "author": "Asser",
+  "license": "MIT License",
+  "bugs": {
+    "url": "https://github.com/asser-dk/ArmasSalesTrackerWebsite/issues"
+  },
+  "homepage": "https://github.com/asser-dk/ArmasSalesTrackerWebsite",
+  "dependencies": {
+    "bower": "^1.3.12"
+  }
+}
