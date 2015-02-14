@@ -14,6 +14,8 @@
     <script src="components/foundation/js/foundation/foundation.abide.js"></script>
     <script src="components/foundation/js/foundation/foundation.tooltip.js"></script>
     <script src="components/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+    <script src="components/Chart.js/Chart.min.js"></script>
+    <script src="components/moment/min/moment-with-locales.min.js"></script>
 </head>
 <body>
 <nav class="top-bar" data-topbar role="navigation">
@@ -138,6 +140,34 @@
     </div>
     <i class="close-reveal-modal fa fa-close"></i>
 </div>
+<div id="product-modal" class="product-modal reveal-modal" data-reveal>
+    <img class="product-image"/>
+
+    <h2></h2>
+
+    <div class="external-link-container"><a class="external-link" target="_blank"><i class="fa fa-external-link"></i>
+        Visit on
+        ARMAS</a></div>
+
+    <h3>Current prices</h3>
+
+    <p class="time-info"><i class="fa fa-clock-o"></i> Last updated <span class="last-updated"></span></p>
+
+    <div class="prices">
+        <div class="price non-premium"></div>
+        <div class="price premium"><i class="fa fa-star premium-star has-tip" data-tooltip aria-haspopup="true"
+                                      title="Premium"></i> <span></span></div>
+        <div class="clearfix"></div>
+    </div>
+
+    <h3><i class="fa fa-line-chart"></i> Price history</h3>
+
+    <p class="time-info"><i class="fa fa-clock-o"></i> From <span class="period-from"></span> to <span
+            class="period-to"></span></p>
+    <canvas id="price-chart" width="700" height="300"></canvas>
+    <div class="chart-legend-container"></div>
+    <i class="close-reveal-modal back-to-products fa fa-arrow-left"></i>
+</div>
 <script>
     window.fadeIn = function (obj)
     {
@@ -152,8 +182,84 @@
             }
         });
 
+        moment.locale('en');
+
         function showProduct(productId)
         {
+            console.log("Show product id " + productId);
+            $.getJSON('http://api.apbsales.sexyfishhorse.com/products/' + productId).done(function (data)
+            {
+                var product = data.Product;
+                var history = data.History;
+                var latestPrice = history[0];
+                history = history.reverse();
+                var timestamps = [];
+                var prices = [];
+                var premiumPrices = [];
+
+                var productModal = $('#product-modal');
+
+                for (var i = 0; i < history.length; i++)
+                {
+                    var item = history[i];
+                    timestamps.push(moment(item.Timestamp).calendar());
+                    prices.push(item.Price);
+                    premiumPrices.push(item.PremiumPrice);
+
+                    if (i == 0)
+                    {
+                        productModal.find('.period-from').text(moment(item.Timestamp).calendar());
+                    }
+
+                    if (i + 1 == history.length)
+                    {
+                        productModal.find('.period-to').text(moment(item.Timestamp).calendar());
+                    }
+                }
+
+                productModal.find('h2').text(product.Title);
+                productModal.find('.product-image').attr('src', product.ImageUrl);
+                productModal.find('.last-updated').text(moment(latestPrice.Timestamp).fromNow());
+                productModal.find('.non-premium').text(latestPrice.Price + " G1C");
+                productModal.find('.premium span').text(latestPrice.PremiumPrice + " G1C");
+                productModal.find('a').attr('href', product.Url);
+
+                var ctx = $('#price-chart').get(0).getContext("2d");
+
+                var chartData = {
+                    labels: timestamps, datasets: [{
+                        label: 'Non premium price',
+                        fillColor: "rgba(67, 172, 106, 0.2)",
+                        strokeColor: "rgba(67, 172, 106, 1)",
+                        pointColor: "rgba(67, 172, 106, 1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(67, 172, 106, 1)",
+                        data: prices
+                    },
+                        {
+                            label: 'Premium price',
+                            fillColor: "rgba(240, 138, 36, 0.2)",
+                            strokeColor: "rgba(240, 138, 36, 1)",
+                            pointColor: "rgba(240, 138, 36, 1)",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(240, 138, 36, 1)",
+                            data: premiumPrices
+                        }]
+                };
+
+                var chart = new Chart(ctx).Line(chartData, {
+                    scaleBeginAtZero: true,
+                    legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li style=\"color:<%=datasets[i].strokeColor%>\"><i class="fa fa-square"></i> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
+                });
+
+                var legend = chart.generateLegend();
+
+                productModal.foundation('reveal', 'open');
+
+                $('.chart-legend-container').html(legend);
+            });
         }
 
         $('.image-link').magnificPopup({type: 'image'});
