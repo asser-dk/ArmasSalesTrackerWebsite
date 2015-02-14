@@ -10,6 +10,8 @@
     <script src="components/foundation/js/foundation.min.js"></script>
     <script src="components/foundation/js/foundation/foundation.topbar.js"></script>
     <script src="components/foundation/js/foundation/foundation.reveal.js"></script>
+    <script src="components/foundation/js/foundation/foundation.abide.js"></script>
+    <script src="components/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
 </head>
 <body>
 <nav class="top-bar" data-topbar role="navigation">
@@ -52,6 +54,34 @@
     </p>
     <i class="close-reveal-modal fa fa-close"></i>
 </div>
+
+<div class="large-4 columns large-centered search-bar">
+    <p class="lead">Search for a product</p>
+
+    <form data-abide>
+        <div class="row collapse">
+            <div class="small-10 columns">
+                <input type="text" id="search-value" class="search-term-field" placeholder="Url, id or name"
+                       autocomplete="off" required>
+                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term.</small>
+            </div>
+            <div class="small-2 columns">
+                <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+        <div class="row hide search-hint">
+            <div class="small 12 columns">
+                <label>This is</label>
+                <input type="radio" name="search-hint" class="hint-text" value="Text" id="hint-text" required/>
+                <label for="hint-text">Text</label>
+                <input type="radio" name="search-hint" class="hint-id" value="Id" id="hint-id" required/>
+                <label for="hint-id">An Id</label>
+                <input type="radio" name="search-hint" class="hint-url" value="Url" id="hint-url" required/>
+                <label for="hint-url">A Url</label>
+            </div>
+        </div>
+    </form>
+</div>
 <script>
     $(function ()
     {
@@ -59,6 +89,40 @@
             abide: {
                 live_validation: false
             }
+        });
+
+        var searchTextField = $('#search-value');
+
+        searchTextField.on('change keypress paste focus textInput input', function ()
+        {
+            var text = searchTextField.val();
+
+            if (text.length > 0)
+            {
+                var n = ~~Number(text);
+                if (String(n) === text && n > 1000)
+                {
+                    $('.hint-id').prop('checked', true);
+                }
+                else if (text.match('^http://'))
+                {
+                    $('.hint-url').prop('checked', true);
+                }
+                else
+                {
+                    $('.hint-text').prop('checked', true);
+                }
+                $('.search-hint').slideDown('slow');
+            }
+            else
+            {
+                $('.search-hint').slideUp('slow');
+            }
+        });
+
+        $('form').on('submit', function (e)
+        {
+            e.preventDefault();
         });
     });
 </script>
