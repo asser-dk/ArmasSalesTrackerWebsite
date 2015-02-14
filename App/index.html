@@ -9,6 +9,7 @@
     <script src="components/modernizr/modernizr.js"></script>
     <script src="components/foundation/js/foundation.min.js"></script>
     <script src="components/foundation/js/foundation/foundation.topbar.js"></script>
+    <script src="components/foundation/js/foundation/foundation.reveal.js"></script>
 </head>
 <body>
 <nav class="top-bar" data-topbar role="navigation">
@@ -23,6 +24,10 @@
             <li>
                 <a href="#">ARMAS Sales tracker</a>
             </li>
+            <li class="divider"></li>
+            <li>
+                <a href="#" data-reveal-id="about-modal"><i class="fa fa-question-circle"></i> About</a>
+            </li>
         </ul>
         <ul class="right">
             <li>
@@ -32,10 +37,29 @@
         </ul>
     </section>
 </nav>
+<div id="about-modal" class="reveal-modal" data-reveal>
+    <h2>APB ARMAS sales tracker</h2>
+
+    <p class="lead">Because 1 hour sales are a bitch to keep track of.</p>
+
+    <p>I got fed up with spamming F5 in various one hour sales threads and then figure out I missed the sale that
+        particular item on ARMAS during that one hour sale. The sales tracker gets the latest prices from ARMAS every
+        hour. You can set up an email reminder for
+        a particular item when it goes on sale.</p>
+
+    <p>Please help me and post bugs, feature requests and feedback on
+        <a href="http://github.com/asser-dk/ArmasSalesTrackerWebsite/issues"><i class="fa fa-github"></i> GitHub</a>
+    </p>
+    <i class="close-reveal-modal fa fa-close"></i>
+</div>
 <script>
     $(function ()
     {
-        $(document).foundation();
+        $(document).foundation({
+            abide: {
+                live_validation: false
+            }
+        });
     });
 </script>
 </body>
