@@ -2,3 +2,6 @@
 .idea/
 node_modules/
 App/components/
+
+*.css.map
+*.css
