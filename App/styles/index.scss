@@ -5,3 +5,53 @@
     top: 33%;
     transform: translate(0, -50%);
 }
+
+.product-results {
+    list-style-type: none;
+
+    .product {
+        height: 95px;
+        position: relative;
+
+        cursor: pointer;
+
+        transition: background 0.2s linear;
+
+        .product-image {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 85px;
+            height: 85px;
+        }
+
+        h3 {
+            position: absolute;
+            top: 0;
+            left: 100px;
+        }
+
+        .prices {
+            position: absolute;
+            left: 100px;
+            top: 50px;
+        }
+    }
+
+    .product:hover {
+        background: $info-color;
+    }
+}
+
+.premium-star {
+    color: #ffbf45;
+}
+
+.price {
+    font-family: "Consolas", "Menlo", "Courier", monospace;
+    font-size: large;
+    font-weight: bold;
+    color: $primary-color;
+    float: left;
+    width: 150px;
+}
