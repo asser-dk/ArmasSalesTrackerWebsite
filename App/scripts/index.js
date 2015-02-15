@@ -94,23 +94,63 @@ function showProducts(data)
         {
             var dataEntry = data[i];
             var product = dataEntry.Product;
-            var latestPrices = dataEntry.LatestPrices;
-            var normalPrices = dataEntry.NormalPrices;
+            var latest = dataEntry.Pricing.Latest;
+            var normal = dataEntry.Pricing.Normal;
 
-            var result = '<li><div class="product" id="' + product.Id +
-                '"><img onload="fadeIn(this)" class="product-image" src="' + product.ImageUrl +
-                '" alt="' + product.Title + '"/><h3>' + product.Title +
-                '</h3><div class="prices"><div class="price">' + latestPrices.Price +
-                ' G1C</div>';
+            var result = '<li><div class="product" id="' + product.Id + '">';
+            result += '<img onload="fadeIn(this)" class="product-image" src="' + product.ImageUrl + '" alt="' +
+            product.Title + '"/>';
+            result += '<h3>' + product.Title + '</h3>';
 
-            if (latestPrices.PremiumPrice > 0)
+            result += '<div class="prices">';
+
+            // Price
+            var normalPrice = normal.Price;
+            var latestPrice = latest.Price;
+
+            result += '<div class="price">';
+
+            if (latestPrice < normalPrice)
             {
-                result += '<div class="price premium">' +
-                '<i class="fa fa-star premium-star has-tip" data-tooltip aria-haspopup="true" title="Premium"></i> ' +
-                latestPrices.PremiumPrice + ' G1C</div>';
+                var percentage = Math.round((1 - (latestPrice / normalPrice)) * 100);
+                result += '<span class="normal discounted">' + normalPrice + ' G1C</span> ';
+                result += '<span class="latest">' + latestPrice + ' G1C</span> ';
+                result += '<span class="discount">Save <span class="percentage">' + percentage + '</span> %</span>';
+            }
+            else
+            {
+                result += '<span class="normal">' + normalPrice + ' G1C</span> ';
             }
 
-            result += '</div></div></li>';
+            result += '</div>';
+
+            // Premium
+            if (latest.Premium > 0)
+            {
+                var normalPremium = normal.Premium;
+                var latestPremium = latest.Premium;
+
+                result += '<div class="price premium">';
+                result += '<i class="fa fa-star premium-star has-tip" data-tooltip aria-haspopup="true" title="Premium"></i> ';
+
+                if (latestPrice < normalPrice)
+                {
+                    result += '<span class="normal discounted">' + normalPremium + ' G1C</span> ';
+                    var premiumPct = Math.round((1 - (latestPremium / normalPremium)) * 100);
+                    result += '<span class="latest">' + latestPremium + ' G1C</span> ';
+                    result += '<span class="discount">Save <span class="percentage">' + premiumPct + '</span> %</span>';
+                }
+                else
+                {
+                    result += '<span class="normal">' + normalPremium + ' G1C</span> ';
+                }
+
+                result += '</div>';
+            }
+
+            result += '</div>';
+            result += '</div></li>';
+
             $(result).hide().prependTo('.product-results').slideDown('fast').delay(200);
         }
 
