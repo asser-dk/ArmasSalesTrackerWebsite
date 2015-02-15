@@ -46,6 +46,20 @@ function showProduct(productId)
         productModal.find('.last-updated').text(moment(latest.Timestamp).fromNow());
         productModal.find('.pricing-container').empty().html(pricingContent);
         productModal.find('a').attr('href', product.Url);
+        productModal.find('.alert-signup .product-id').val(productId);
+
+        productModal.find('.signup .signed-up-alert-box').hide();
+
+        if (onSale)
+        {
+            productModal.find('.on-sale').show();
+            productModal.find('.signup .unavailable').show();
+        }
+        else
+        {
+            productModal.find('.signup .available').show();
+            productModal.find('.signup .unavailable').hide();
+        }
 
         var ctx = $('#price-chart').get(0).getContext("2d");
 
@@ -231,4 +245,25 @@ function performSearch(e)
     {
         showProduct(this.id);
     });
+}
+
+function performAlertSignup(e)
+{
+    'use strict';
+    e.preventDefault();
+
+    if (e.type !== "valid")
+    {
+        return;
+    }
+
+    var email = $('.alert-signup #email-address').val();
+    var productId = $('.alert-signup .product-id').val();
+
+    $.post('http://api.apbsales.sexyfishhorse.com/alerts/signup',
+        JSON.stringify({'Email': email, ProductId: productId})).done(function ()
+        {
+            $('.signup .signed-up-alert-box').text('You have been successfully signed up. You will receive an email the next time this product goes on sale.').hide().fadeIn();
+        });
+
 }
