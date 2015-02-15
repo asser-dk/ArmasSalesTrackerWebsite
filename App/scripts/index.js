@@ -1,9 +1,9 @@
-/* global $:false, console:false, moment:false, Chart:false */
+/* global $:false, console:false, moment:false, Chart:false ~~:false */
 
 function showProduct(productId)
 {
     'use strict';
-    console.log("Show product id " + productId);
+
     $.getJSON('http://api.apbsales.sexyfishhorse.com/products/' + productId).done(function (data)
     {
         var product = data.Product;
@@ -11,6 +11,7 @@ function showProduct(productId)
         var pricing = data.Pricing;
         var normal = pricing.Normal;
         var latest = pricing.Latest;
+        var onSale = latest.Price < normal.Price || latest.Premium < normal.Premium;
 
         history = history.reverse();
         var timestamps = [];
@@ -25,7 +26,7 @@ function showProduct(productId)
             var item = history[i];
             timestamps.push(moment(item.Timestamp).calendar());
             prices.push(item.Price);
-            premiumPrices.push(item.PremiumPrice);
+            premiumPrices.push(item.Premium);
 
             if (i === 0)
             {
@@ -45,6 +46,20 @@ function showProduct(productId)
         productModal.find('.last-updated').text(moment(latest.Timestamp).fromNow());
         productModal.find('.pricing-container').empty().html(pricingContent);
         productModal.find('a').attr('href', product.Url);
+        productModal.find('.alert-signup .product-id').val(productId);
+
+        productModal.find('.signup .signed-up-alert-box').hide();
+
+        if (onSale)
+        {
+            productModal.find('.on-sale').show();
+            productModal.find('.signup .unavailable').show();
+        }
+        else
+        {
+            productModal.find('.signup .available').show();
+            productModal.find('.signup .unavailable').hide();
+        }
 
         var ctx = $('#price-chart').get(0).getContext("2d");
 
@@ -156,12 +171,19 @@ function showProducts(data)
             var latest = dataEntry.Pricing.Latest;
             var normal = dataEntry.Pricing.Normal;
             var timestamp = latest.Timestamp;
+            var onSale = latest.Price < normal.Price || latest.Premium < normal.Premium;
 
             var result = '<li><div class="product" id="' + product.Id + '">';
             result += '<img onload="fadeIn(this)" class="product-image" src="' + product.ImageUrl + '" alt="' +
             product.Title + '"/>';
-            result += '<h3>' + product.Title + '</h3>';
             result += '<div class="timestamp"><i class="fa fa-clock-o"></i> ' + moment(timestamp).fromNow() + '</div>';
+            result += '<div class="title">';
+            result += '<h3>' + product.Title + '</h3>';
+            if (onSale)
+            {
+                result += '<div class="on-sale">On sale!</div>';
+            }
+            result += '</div>';
             result += generatePricing(normal, latest);
             result += '</div></li>';
 
@@ -194,13 +216,29 @@ function performSearch(e)
     'use strict';
     e.preventDefault();
 
-    if(e.type !== "valid"){
+    if (e.type !== "valid")
+    {
         return;
     }
 
     var productsModal = $('#products-modal');
-    var hint = $('input[type="radio"][name="search-hint"]:checked').val();
     var text = $('#search-value').val();
+    productsModal.find('.product-results').empty();
+
+    var hint = "Text";
+
+    if (text > 1000)
+    {
+        hint = "Id";
+    }
+    else if (text.match('^http://'))
+    {
+        hint = "Url";
+    }
+    else
+    {
+        hint = "Text";
+    }
 
     if (!hint || !text)
     {
@@ -209,10 +247,10 @@ function performSearch(e)
 
     $('.search-term').text(text);
     $('#result-search-value').val(text);
-    if (!productsModal.is(':visible'))
-    {
-        productsModal.foundation('reveal', 'open');
-    }
+
+    $('.search-bar').addClass('large-12').addClass('to-top');
+
+    $('.results').slideDown('fast');
 
     $.post('http://api.apbsales.sexyfishhorse.com/products/search',
         JSON.stringify({'Term': text, 'Hint': hint})).done(showProducts).error(showNothingFound);
@@ -221,4 +259,25 @@ function performSearch(e)
     {
         showProduct(this.id);
     });
+}
+
+function performAlertSignup(e)
+{
+    'use strict';
+    e.preventDefault();
+
+    if (e.type !== "valid")
+    {
+        return;
+    }
+
+    var email = $('.alert-signup #email-address').val();
+    var productId = $('.alert-signup .product-id').val();
+
+    $.post('http://api.apbsales.sexyfishhorse.com/alerts/signup',
+        JSON.stringify({'Email': email, ProductId: productId})).done(function ()
+        {
+            $('.signup .signed-up-alert-box').text('You have been successfully signed up. You will receive an email the next time this product goes on sale.').hide().fadeIn();
+        });
+
 }

@@ -2,8 +2,13 @@
 
 .search-bar {
     position: relative;
+    transition: all 0.5s ease;
     top: 33%;
     transform: translate(0, -50%);
+}
+
+.to-top {
+    top: 70px !important;
 }
 
 .product-image {
@@ -14,31 +19,51 @@
     height: auto;
 }
 
+#about-modal {
+    .not-affiliated {
+        font-size: small;
+    }
+}
+
 .product-results {
     list-style-type: none;
+    margin-left: 0;
 
     .product {
         height: 95px;
+        padding: 5px;
         position: relative;
         cursor: pointer;
         transition: background 0.2s linear;
+
+        .product-image {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+        }
+
+        .title {
+            position: absolute;
+            left: 90px;
+
+            h3 {
+                float: left;
+                margin-right: 10px;
+                margin-left: 5px;
+                line-height: 30px;
+            }
+
+            .on-sale {
+                line-height: 30px;
+                font-size: x-large;
+            }
+        }
 
         .timestamp {
             float: right;
             margin-right: 5px;
             font-size: smaller;
-        }
-
-        .product-image {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-        }
-
-        h3 {
-            position: absolute;
-            top: 0;
-            left: 100px;
+            display: inline-block;
         }
 
         .prices {
@@ -59,12 +84,19 @@
     .header {
         height: 85px;
 
-        h2 {
-            position: absolute;
-            left: 125px;
-            top: 20px;
-            margin: 0;
-            padding: 0;
+        .product-image {
+            float: left;
+            margin-right: 10px;
+        }
+
+        .title {
+            h2 {
+                margin: 0;
+                padding: 0;
+                display: inline-block;
+                float: left;
+                line-height: 50px;
+            }
         }
 
         .external-link {
@@ -90,25 +122,6 @@
         display: block;
     }
 
-    .prices {
-        margin-left: auto;
-        margin-right: auto;
-        width: 305px;
-
-        .price {
-            text-align: center;
-        }
-
-        .discounted {
-            text-decoration: line-through;
-        }
-
-        .discount {
-            font-weight: bold;
-            font-size: x-large;
-        }
-    }
-
     .line-legend {
         list-style-type: none;
         margin-left: auto;
@@ -124,10 +137,6 @@
 }
 
 .prices {
-    margin-left: auto;
-    margin-right: auto;
-    min-width: 305px;
-
     .price {
         font-family: "Consolas", "Menlo", "Courier", monospace;
         font-size: large;
@@ -145,6 +154,7 @@
 
     .premium {
         color: $warning-color;
+        float: right;
     }
 
     .discounted {
@@ -164,4 +174,13 @@
 
 .premium-star {
     color: #ffbf45;
+}
+
+.on-sale {
+    color: $primary-color;
+    font-weight: bold;
+    font-size: xx-large;
+    margin-left: 10px;
+    float: left;
+    line-height: 50px;
 }
