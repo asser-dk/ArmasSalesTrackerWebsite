@@ -3,7 +3,7 @@
 function showProduct(productId)
 {
     'use strict';
-    console.log("Show product id " + productId);
+
     $.getJSON('http://api.apbsales.sexyfishhorse.com/products/' + productId).done(function (data)
     {
         var product = data.Product;
@@ -11,6 +11,7 @@ function showProduct(productId)
         var pricing = data.Pricing;
         var normal = pricing.Normal;
         var latest = pricing.Latest;
+        var onSale = latest.Price < normal.Price || latest.Premium < normal.Premium;
 
         history = history.reverse();
         var timestamps = [];
@@ -25,7 +26,7 @@ function showProduct(productId)
             var item = history[i];
             timestamps.push(moment(item.Timestamp).calendar());
             prices.push(item.Price);
-            premiumPrices.push(item.PremiumPrice);
+            premiumPrices.push(item.Premium);
 
             if (i === 0)
             {
