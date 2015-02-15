@@ -1,0 +1,114 @@
+@import 'sfhStyle';
+
+.search-bar {
+    position: relative;
+    top: 33%;
+    transform: translate(0, -50%);
+}
+
+.product-results {
+    list-style-type: none;
+
+    .product {
+        height: 95px;
+        position: relative;
+
+        cursor: pointer;
+
+        transition: background 0.2s linear;
+
+        .product-image {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 85px;
+            height: 85px;
+        }
+
+        h3 {
+            position: absolute;
+            top: 0;
+            left: 100px;
+        }
+
+        .prices {
+            position: absolute;
+            left: 100px;
+            top: 50px;
+        }
+    }
+
+    .product:hover {
+        background: $info-color;
+    }
+}
+
+.product-modal {
+    position: relative;
+
+    h2 {
+        position: absolute;
+        left: 125px;
+        top: 20px;
+        margin: 0;
+        padding: 0;
+    }
+
+    h3 {
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+
+    .time-info {
+        font-size: smaller;
+    }
+
+    .external-link {
+        font-size: x-large;
+        position: absolute;
+        left: 125px;
+        top: 85px;
+    }
+
+    canvas {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+    .prices {
+        margin-left: auto;
+        margin-right: auto;
+        width: 305px;
+
+        .price {
+            text-align: center;
+        }
+    }
+
+    .line-legend {
+        list-style-type: none;
+        margin-left: auto;
+        margin-right: auto;
+        width: 405px;
+        text-align: center;
+
+        li {
+            width: 200px;
+            float: left;
+        }
+    }
+}
+
+.premium-star {
+    color: #ffbf45;
+}
+
+.price {
+    font-family: "Consolas", "Menlo", "Courier", monospace;
+    font-size: large;
+    font-weight: bold;
+    color: $primary-color;
+    float: left;
+    width: 150px;
+}
