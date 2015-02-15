@@ -66,9 +66,9 @@
     <form data-abide>
         <div class="row collapse">
             <div class="small-10 columns">
-                <input type="text" id="search-value" class="search-term-field" placeholder="Url, id or name"
+                <input type="text" id="search-value" class="search-term-field" pattern="search_term" placeholder="Url, id or name"
                        autocomplete="off" required>
-                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term.</small>
+                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which is at least 3 characters long.</small>
             </div>
             <div class="small-2 columns">
                 <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search</button>
@@ -94,10 +94,9 @@
         <form data-abide>
             <div class="row collapse">
                 <div class="small-10 columns">
-                    <input type="text" id="result-search-value" class="search-term-field" placeholder="Url, id or name"
+                    <input type="text" id="result-search-value" class="search-term-field" pattern="search_term" placeholder="Url, id or name"
                            autocomplete="off" required>
-                    <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term.
-                    </small>
+                    <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which is at least 3 characters long.</small>
                 </div>
                 <div class="small-2 columns">
                     <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search
@@ -184,7 +183,10 @@
     {
         $(document).foundation({
             abide: {
-                live_validation: false
+                patterns:
+                {
+                    search_term: /^.{3,}$/
+                }
             }
         });
 
@@ -201,7 +203,7 @@
             productsModal.foundation('reveal', 'open');
         });
 
-        $('form').on('submit', performSearch);
+        $('form').on('valid submit', performSearch);
 
         searchTextField.on('change keypress paste focus textInput input', function ()
         {

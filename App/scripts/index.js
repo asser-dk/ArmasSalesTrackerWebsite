@@ -182,6 +182,10 @@ function performSearch(e)
     'use strict';
     e.preventDefault();
 
+    if(e.type !== "valid"){
+        return;
+    }
+
     var productsModal = $('#products-modal');
     var hint = $('input[type="radio"][name="search-hint"]:checked').val();
     var text = $('#search-value').val();
