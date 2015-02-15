@@ -56,12 +56,23 @@
 .product-modal {
     position: relative;
 
-    h2 {
-        position: absolute;
-        left: 125px;
-        top: 20px;
-        margin: 0;
-        padding: 0;
+    .header {
+        height: 85px;
+
+        h2 {
+            position: absolute;
+            left: 125px;
+            top: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .external-link {
+            font-size: x-large;
+            position: absolute;
+            left: 125px;
+            top: 85px;
+        }
     }
 
     h3 {

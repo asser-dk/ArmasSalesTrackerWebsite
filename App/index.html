@@ -142,31 +142,36 @@
     <i class="close-reveal-modal fa fa-close"></i>
 </div>
 <div id="product-modal" class="product-modal reveal-modal" data-reveal>
-    <img class="product-image" src="" />
+    <div class="row header">
+        <img class="product-image" src=""/>
 
-    <h2></h2>
+        <h2></h2>
 
-    <div class="external-link-container"><a class="external-link" target="_blank"><i class="fa fa-external-link"></i>
-        Visit on
-        ARMAS</a></div>
-
-    <h3>Current prices</h3>
-
-    <p class="time-info"><i class="fa fa-clock-o"></i> Last updated <span class="last-updated"></span></p>
-
-    <div class="prices">
-        <div class="price non-premium"></div>
-        <div class="price premium"><i class="fa fa-star premium-star has-tip" data-tooltip aria-haspopup="true"
-                                      title="Premium"></i> <span></span></div>
-        <div class="clearfix"></div>
+        <div class="external-link-container"><a class="external-link" target="_blank"><i
+                class="fa fa-external-link"></i>
+            Visit on
+            ARMAS</a></div>
     </div>
+    <div class="row">
+        <h3>Current prices</h3>
 
-    <h3><i class="fa fa-line-chart"></i> Price history</h3>
+        <p class="time-info"><i class="fa fa-clock-o"></i> Last updated <span class="last-updated"></span></p>
 
-    <p class="time-info"><i class="fa fa-clock-o"></i> From <span class="period-from"></span> to <span
-            class="period-to"></span></p>
-    <canvas id="price-chart" width="700" height="300"></canvas>
-    <div class="chart-legend-container"></div>
+        <div class="prices">
+            <div class="price non-premium"></div>
+            <div class="price premium"><i class="fa fa-star premium-star has-tip" data-tooltip aria-haspopup="true"
+                                          title="Premium"></i> <span></span></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="row">
+        <h3><i class="fa fa-line-chart"></i> Price history</h3>
+
+        <p class="time-info"><i class="fa fa-clock-o"></i> From <span class="period-from"></span> to <span
+                class="period-to"></span></p>
+        <canvas id="price-chart" width="700" height="300"></canvas>
+        <div class="chart-legend-container"></div>
+    </div>
     <i class="close-reveal-modal back-to-products fa fa-arrow-left"></i>
 </div>
 <script>
