@@ -2,8 +2,13 @@
 
 .search-bar {
     position: relative;
+    transition: all 0.5s ease;
     top: 33%;
     transform: translate(0, -50%);
+}
+
+.to-top {
+    top: 70px !important;
 }
 
 .product-image {
@@ -12,6 +17,12 @@
     max-height: 85px;
     width: auto;
     height: auto;
+}
+
+#about-modal {
+    .not-affiliated {
+        font-size: small;
+    }
 }
 
 .product-results {

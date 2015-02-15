@@ -1,4 +1,4 @@
-/* global $:false, console:false, moment:false, Chart:false */
+/* global $:false, console:false, moment:false, Chart:false ~~:false */
 
 function showProduct(productId)
 {
@@ -222,9 +222,23 @@ function performSearch(e)
     }
 
     var productsModal = $('#products-modal');
-    var hint = $('input[type="radio"][name="search-hint"]:checked').val();
     var text = $('#search-value').val();
     productsModal.find('.product-results').empty();
+
+    var hint = "Text";
+
+    if (text > 1000)
+    {
+        hint = "Id";
+    }
+    else if (text.match('^http://'))
+    {
+        hint = "Url";
+    }
+    else
+    {
+        hint = "Text";
+    }
 
     if (!hint || !text)
     {
@@ -233,10 +247,10 @@ function performSearch(e)
 
     $('.search-term').text(text);
     $('#result-search-value').val(text);
-    if (!productsModal.is(':visible'))
-    {
-        productsModal.foundation('reveal', 'open');
-    }
+
+    $('.search-bar').addClass('large-12').addClass('to-top');
+
+    $('.results').slideDown('fast');
 
     $.post('http://api.apbsales.sexyfishhorse.com/products/search',
         JSON.stringify({'Term': text, 'Hint': hint})).done(showProducts).error(showNothingFound);

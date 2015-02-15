@@ -53,93 +53,8 @@
     <p>Please help me and post bugs, feature requests and feedback on
         <a href="http://github.com/asser-dk/ArmasSalesTrackerWebsite/issues"><i class="fa fa-github"></i> GitHub</a>
     </p>
-    <i class="close-reveal-modal fa fa-close"></i>
-</div>
 
-<div class="large-4 columns large-centered search-bar">
-    <p class="lead">Search for a product</p>
-
-    <form class="search-form" data-abide>
-        <div class="row collapse">
-            <div class="small-10 columns">
-                <input type="text" id="search-value" class="search-term-field" pattern="search_term"
-                       placeholder="Url, id or name"
-                       autocomplete="off" required>
-                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which is at
-                    least 3 characters long.
-                </small>
-            </div>
-            <div class="small-2 columns">
-                <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search</button>
-            </div>
-        </div>
-        <div class="row hide search-hint">
-            <div class="small 12 columns">
-                <label>This is</label>
-                <input type="radio" name="search-hint" class="hint-text" value="Text" id="hint-text" required/>
-                <label for="hint-text">Text</label>
-                <input type="radio" name="search-hint" class="hint-id" value="Id" id="hint-id" required/>
-                <label for="hint-id">An Id</label>
-                <input type="radio" name="search-hint" class="hint-url" value="Url" id="hint-url" required/>
-                <label for="hint-url">A Url</label>
-            </div>
-        </div>
-    </form>
-</div>
-<div id="products-modal" class="reveal-modal" data-reveal>
-    <h2>Search for '<span class="search-term"></span>'</h2>
-
-    <div class="result-search-form">
-        <form class="search-form" data-abide>
-            <div class="row collapse">
-                <div class="small-10 columns">
-                    <input type="text" id="result-search-value" class="search-term-field" pattern="search_term"
-                           placeholder="Url, id or name"
-                           autocomplete="off" required>
-                    <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which
-                        is at least 3 characters long.
-                    </small>
-                </div>
-                <div class="small-2 columns">
-                    <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search
-                    </button>
-                </div>
-            </div>
-            <div class="row hide search-hint">
-                <div class="small 12 columns">
-                    <label>This is</label>
-                    <input type="radio" name="search-hint" class="hint-text" value="Text" id="result-hint-text"
-                           required/>
-                    <label for="result-hint-text">Text</label>
-                    <input type="radio" name="search-hint" class="hint-id" value="Id" id="result-hint-id" required/>
-                    <label for="result-hint-id">An Id</label>
-                    <input type="radio" name="search-hint" class="hint-url" value="Url" id="result-hint-url" required/>
-                    <label for="result-hint-url">A Url</label>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="found-products hide">
-        <p class="lead">These products were the best matches.</p>
-
-        <p>The prices are at most an hour old. If any of these products have been removed from ARMAS then the
-            displayed price is the latest price it had before it was taken down. Click on an item to learn more about
-            the
-            price history.</p>
-        <ul class="product-results"></ul>
-    </div>
-
-    <div class="nothing-found hide">
-        <h3>Oops.</h3>
-
-        <p class="lead">We couldn't find what you were looking for :(</p>
-
-        <p>We couldn't find anything that matched <strong><span class="search-term"></span></strong>.</p>
-
-        <p>Check your spelling or try to enter the <a href="images/productId.png" target="_blank" class="image-link">Product
-            id</a> or paste the direct link to the product on ARMAS.</p>
-    </div>
+    <p class="not-affiliated">Something about not being affiliated with anyone.</p>
     <i class="close-reveal-modal fa fa-close"></i>
 </div>
 <div id="product-modal" class="product-modal reveal-modal" data-reveal>
@@ -204,7 +119,51 @@
             </div>
         </div>
     </div>
-    <i class="close-reveal-modal back-to-products fa fa-arrow-left"></i>
+    <i class="close-reveal-modal fa fa-close"></i>
+</div>
+
+<div class="large-4 columns large-centered search-bar">
+    <p class="lead">Search for a product</p>
+
+    <form class="search-form" data-abide>
+        <div class="row collapse">
+            <div class="small-10 columns">
+                <input type="text" id="search-value" class="search-term-field" pattern="search_term"
+                       placeholder="Url, id or name"
+                       autocomplete="off" required>
+                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which is at
+                    least 3 characters long.
+                </small>
+            </div>
+            <div class="small-2 columns">
+                <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="results row">
+    <h2>Results for '<span class="search-term"></span>'</h2>
+
+    <div class="found-products hide">
+        <p class="lead">These products were the best matches.</p>
+
+        <p>The prices are at most an hour old. If any of these products have been removed from ARMAS then the
+            displayed price is the latest price it had before it was taken down. Click on an item to learn more about
+            the
+            price history.</p>
+        <ul class="product-results"></ul>
+    </div>
+
+    <div class="nothing-found hide">
+        <h3>Oops.</h3>
+
+        <p class="lead">We couldn't find what you were looking for :(</p>
+
+        <p>We couldn't find anything that matched <strong><span class="search-term"></span></strong>.</p>
+
+        <p>Check your spelling or try to enter the <a href="images/productId.png" target="_blank" class="image-link">Product
+            id</a> or paste the direct link to the product on ARMAS.</p>
+    </div>
 </div>
 <div class="reveal-modal signup-success" data-reveal>
     <h2>Signup successfull</h2>
@@ -225,80 +184,11 @@
             }
         });
 
-        var productsModal = $('#products-modal');
-        var searchTextField = $('#search-value');
-        var resultSearchTextField = $('#result-search-value');
-
         moment.locale('en');
-
+        $('.results').hide();
         $('.image-link').magnificPopup({type: 'image'});
-
-        $('.back-to-products').on('click', function ()
-        {
-            productsModal.foundation('reveal', 'open');
-        });
-
         $('.alert-signup').on('valid submit', performAlertSignup);
         $('.search-form').on('valid submit', performSearch);
-
-        searchTextField.on('change keypress paste focus textInput input', function ()
-        {
-            var text = searchTextField.val();
-            resultSearchTextField.val(text);
-
-            if (text.length > 0)
-            {
-                var n = ~~Number(text);
-                if (String(n) === text && n > 1000)
-                {
-                    $('.hint-id').prop('checked', true);
-                }
-                else if (text.match('^http://'))
-                {
-                    $('.hint-url').prop('checked', true);
-                }
-                else
-                {
-                    $('.hint-text').prop('checked', true);
-                }
-                $('.search-hint').slideDown('slow');
-            }
-            else
-            {
-                $('.search-hint').slideUp('slow');
-            }
-        });
-
-        resultSearchTextField.on('change keypress paste focus textInput input', function ()
-        {
-            var text = resultSearchTextField.val();
-            searchTextField.val(text);
-
-            if (text.length > 0)
-            {
-                var n = ~~Number(text);
-                if (String(n) === text && n > 1000)
-                {
-                    $('.hint-id').prop('checked', true);
-                }
-                else if (text.match('^http://'))
-                {
-                    $('.hint-url').prop('checked', true);
-                }
-                else
-                {
-                    $('.hint-text').prop('checked', true);
-                }
-                $('.search-hint').slideDown('slow');
-            }
-            else
-            {
-                productsModal.find('.product-results').empty();
-                $('.found-products').fadeOut('fast');
-                $('.nothing-found').fadeOut('fast');
-                $('.search-hint').slideUp('slow');
-            }
-        });
     });
 </script>
 </body>
