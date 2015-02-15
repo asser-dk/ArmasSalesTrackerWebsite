@@ -210,6 +210,7 @@ function performSearch(e)
     var productsModal = $('#products-modal');
     var hint = $('input[type="radio"][name="search-hint"]:checked').val();
     var text = $('#search-value').val();
+    productsModal.find('.product-results').empty();
 
     if (!hint || !text)
     {
