@@ -157,12 +157,19 @@ function showProducts(data)
             var latest = dataEntry.Pricing.Latest;
             var normal = dataEntry.Pricing.Normal;
             var timestamp = latest.Timestamp;
+            var onSale = latest.Price < normal.Price || latest.Premium < normal.Premium;
 
             var result = '<li><div class="product" id="' + product.Id + '">';
             result += '<img onload="fadeIn(this)" class="product-image" src="' + product.ImageUrl + '" alt="' +
             product.Title + '"/>';
-            result += '<h3>' + product.Title + '</h3>';
             result += '<div class="timestamp"><i class="fa fa-clock-o"></i> ' + moment(timestamp).fromNow() + '</div>';
+            result += '<div class="title">';
+            result += '<h3>' + product.Title + '</h3>';
+            if (onSale)
+            {
+                result += '<div class="on-sale">On sale!</div>';
+            }
+            result += '</div>';
             result += generatePricing(normal, latest);
             result += '</div></li>';
 
