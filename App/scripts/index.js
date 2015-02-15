@@ -202,7 +202,8 @@ function performSearch(e)
     'use strict';
     e.preventDefault();
 
-    if(e.type !== "valid"){
+    if (e.type !== "valid")
+    {
         return;
     }
 
