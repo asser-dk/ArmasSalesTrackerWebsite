@@ -16,6 +16,7 @@
     <script src="components/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
     <script src="components/Chart.js/Chart.min.js"></script>
     <script src="components/moment/min/moment-with-locales.min.js"></script>
+    <script src="scripts/index.js"></script>
 </head>
 <body>
 <nav class="top-bar" data-topbar role="navigation">
@@ -65,9 +66,9 @@
     <form data-abide>
         <div class="row collapse">
             <div class="small-10 columns">
-                <input type="text" id="search-value" class="search-term-field" placeholder="Url, id or name"
+                <input type="text" id="search-value" class="search-term-field" pattern="search_term" placeholder="Url, id or name"
                        autocomplete="off" required>
-                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term.</small>
+                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which is at least 3 characters long.</small>
             </div>
             <div class="small-2 columns">
                 <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search</button>
@@ -93,10 +94,9 @@
         <form data-abide>
             <div class="row collapse">
                 <div class="small-10 columns">
-                    <input type="text" id="result-search-value" class="search-term-field" placeholder="Url, id or name"
+                    <input type="text" id="result-search-value" class="search-term-field" pattern="search_term" placeholder="Url, id or name"
                            autocomplete="off" required>
-                    <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term.
-                    </small>
+                    <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which is at least 3 characters long.</small>
                 </div>
                 <div class="small-2 columns">
                     <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search
@@ -141,31 +141,31 @@
     <i class="close-reveal-modal fa fa-close"></i>
 </div>
 <div id="product-modal" class="product-modal reveal-modal" data-reveal>
-    <img class="product-image"/>
+    <div class="row header">
+        <img class="product-image" src=""/>
 
-    <h2></h2>
+        <h2></h2>
 
-    <div class="external-link-container"><a class="external-link" target="_blank"><i class="fa fa-external-link"></i>
-        Visit on
-        ARMAS</a></div>
-
-    <h3>Current prices</h3>
-
-    <p class="time-info"><i class="fa fa-clock-o"></i> Last updated <span class="last-updated"></span></p>
-
-    <div class="prices">
-        <div class="price non-premium"></div>
-        <div class="price premium"><i class="fa fa-star premium-star has-tip" data-tooltip aria-haspopup="true"
-                                      title="Premium"></i> <span></span></div>
-        <div class="clearfix"></div>
+        <div class="external-link-container"><a class="external-link" target="_blank"><i
+                class="fa fa-external-link"></i>
+            Visit on
+            ARMAS</a></div>
     </div>
+    <div class="row">
+        <h3>Current prices</h3>
 
-    <h3><i class="fa fa-line-chart"></i> Price history</h3>
+        <p class="time-info"><i class="fa fa-clock-o"></i> Last updated <span class="last-updated"></span></p>
 
-    <p class="time-info"><i class="fa fa-clock-o"></i> From <span class="period-from"></span> to <span
-            class="period-to"></span></p>
-    <canvas id="price-chart" width="700" height="300"></canvas>
-    <div class="chart-legend-container"></div>
+        <div class="pricing-container"></div>
+    </div>
+    <div class="row">
+        <h3><i class="fa fa-line-chart"></i> Price history</h3>
+
+        <p class="time-info"><i class="fa fa-clock-o"></i> From <span class="period-from"></span> to <span
+                class="period-to"></span></p>
+        <canvas id="price-chart" width="700" height="300"></canvas>
+        <div class="chart-legend-container"></div>
+    </div>
     <i class="close-reveal-modal back-to-products fa fa-arrow-left"></i>
 </div>
 <script>
@@ -178,95 +178,27 @@
     {
         $(document).foundation({
             abide: {
-                live_validation: false
+                patterns:
+                {
+                    search_term: /^.{3,}$/
+                }
             }
         });
-
-        moment.locale('en');
-
-        function showProduct(productId)
-        {
-            console.log("Show product id " + productId);
-            $.getJSON('http://api.apbsales.sexyfishhorse.com/products/' + productId).done(function (data)
-            {
-                var product = data.Product;
-                var history = data.History;
-                var latestPrice = history[0];
-                history = history.reverse();
-                var timestamps = [];
-                var prices = [];
-                var premiumPrices = [];
-
-                var productModal = $('#product-modal');
-
-                for (var i = 0; i < history.length; i++)
-                {
-                    var item = history[i];
-                    timestamps.push(moment(item.Timestamp).calendar());
-                    prices.push(item.Price);
-                    premiumPrices.push(item.PremiumPrice);
-
-                    if (i == 0)
-                    {
-                        productModal.find('.period-from').text(moment(item.Timestamp).calendar());
-                    }
-
-                    if (i + 1 == history.length)
-                    {
-                        productModal.find('.period-to').text(moment(item.Timestamp).calendar());
-                    }
-                }
-
-                productModal.find('h2').text(product.Title);
-                productModal.find('.product-image').attr('src', product.ImageUrl);
-                productModal.find('.last-updated').text(moment(latestPrice.Timestamp).fromNow());
-                productModal.find('.non-premium').text(latestPrice.Price + " G1C");
-                productModal.find('.premium span').text(latestPrice.PremiumPrice + " G1C");
-                productModal.find('a').attr('href', product.Url);
-
-                var ctx = $('#price-chart').get(0).getContext("2d");
-
-                var chartData = {
-                    labels: timestamps, datasets: [{
-                        label: 'Non premium price',
-                        fillColor: "rgba(67, 172, 106, 0.2)",
-                        strokeColor: "rgba(67, 172, 106, 1)",
-                        pointColor: "rgba(67, 172, 106, 1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(67, 172, 106, 1)",
-                        data: prices
-                    },
-                        {
-                            label: 'Premium price',
-                            fillColor: "rgba(240, 138, 36, 0.2)",
-                            strokeColor: "rgba(240, 138, 36, 1)",
-                            pointColor: "rgba(240, 138, 36, 1)",
-                            pointStrokeColor: "#fff",
-                            pointHighlightFill: "#fff",
-                            pointHighlightStroke: "rgba(240, 138, 36, 1)",
-                            data: premiumPrices
-                        }]
-                };
-
-                var chart = new Chart(ctx).Line(chartData, {
-                    scaleBeginAtZero: true,
-                    legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li style=\"color:<%=datasets[i].strokeColor%>\"><i class="fa fa-square"></i> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
-                });
-
-                var legend = chart.generateLegend();
-
-                productModal.foundation('reveal', 'open');
-
-                $('.chart-legend-container').html(legend);
-            });
-        }
-
-        $('.image-link').magnificPopup({type: 'image'});
 
         var productsModal = $('#products-modal');
         var searchTextField = $('#search-value');
         var resultSearchTextField = $('#result-search-value');
+
+        moment.locale('en');
+
+        $('.image-link').magnificPopup({type: 'image'});
+
+        $('.back-to-products').on('click', function ()
+        {
+            productsModal.foundation('reveal', 'open');
+        });
+
+        $('form').on('valid submit', performSearch);
 
         searchTextField.on('change keypress paste focus textInput input', function ()
         {
@@ -326,87 +258,6 @@
                 $('.search-hint').slideUp('slow');
             }
         });
-
-        $('.back-to-products').on('click', function ()
-        {
-            productsModal.foundation('reveal', 'open');
-        });
-
-        $('form').on('submit', function (e)
-        {
-            e.preventDefault();
-
-            var hint = $('input[type="radio"][name="search-hint"]:checked').val();
-            var text = searchTextField.val();
-
-            if (!hint || !text)
-            {
-                return;
-            }
-
-            $('.search-term').text(text);
-            $('#result-search-value').val(text);
-            if (!productsModal.is(':visible'))
-            {
-                productsModal.foundation('reveal', 'open');
-            }
-
-            $.post('http://api.apbsales.sexyfishhorse.com/products/search',
-                    JSON.stringify({'Term': text, 'Hint': hint})).done(function (data)
-                    {
-                        if (data && data.length > 0)
-                        {
-                            $('.nothing-found').slideUp('fast', function ()
-                            {
-                                $('.found-products').slideDown('slow');
-                            });
-
-                            for (var i = 0; i < data.length; i++)
-                            {
-                                var dataEntry = data[i];
-                                var product = dataEntry.Product;
-                                var latestPrices = dataEntry.History[0];
-
-                                var result = '<li><div class="product" id="' + product.Id +
-                                        '"><img onload="fadeIn(this)" class="product-image" src="' + product.ImageUrl +
-                                        '" alt="' + product.Title + '"/><h3>' + product.Title +
-                                        '</h3><div class="prices"><div class="price">' + latestPrices.Price +
-                                        ' G1C</div>';
-
-                                if (latestPrices.PremiumPrice > 0)
-                                {
-                                    result += '<div class="price premium">' +
-                                    '<i class="fa fa-star premium-star has-tip" data-tooltip aria-haspopup="true" title="Premium"></i> ' +
-                                    latestPrices.PremiumPrice + ' G1C</div>';
-                                }
-
-                                result += '</div></div></li>';
-                                $(result).hide().prependTo('.product-results').slideDown('fast').delay(200);
-                            }
-
-                            $(document).foundation('tooltip', 'reflow');
-                        }
-                        else
-                        {
-                            $('.found-products').slideUp('fast', function ()
-                            {
-                                $('.nothing-found').slideDown('slow');
-                            });
-                        }
-                    }).error(function (data)
-                    {
-                        console.error(data);
-                        $('.found-products').slideUp('fast', function ()
-                        {
-                            $('.nothing-found').slideDown('slow');
-                        });
-                    });
-
-            $('.product-results').on('click', '.product', function ()
-            {
-                showProduct(this.id);
-            });
-        })
     });
 </script>
 </body>

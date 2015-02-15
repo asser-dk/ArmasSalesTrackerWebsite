@@ -6,23 +6,33 @@
     transform: translate(0, -50%);
 }
 
+.product-image {
+    display: block;
+    max-width: 85px;
+    max-height: 85px;
+    width: auto;
+    height: auto;
+}
+
 .product-results {
     list-style-type: none;
 
     .product {
         height: 95px;
         position: relative;
-
         cursor: pointer;
-
         transition: background 0.2s linear;
+
+        .timestamp {
+            float: right;
+            margin-right: 5px;
+            font-size: smaller;
+        }
 
         .product-image {
             position: absolute;
             top: 5px;
             left: 5px;
-            width: 85px;
-            height: 85px;
         }
 
         h3 {
@@ -46,12 +56,23 @@
 .product-modal {
     position: relative;
 
-    h2 {
-        position: absolute;
-        left: 125px;
-        top: 20px;
-        margin: 0;
-        padding: 0;
+    .header {
+        height: 85px;
+
+        h2 {
+            position: absolute;
+            left: 125px;
+            top: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .external-link {
+            font-size: x-large;
+            position: absolute;
+            left: 125px;
+            top: 85px;
+        }
     }
 
     h3 {
@@ -61,13 +82,6 @@
 
     .time-info {
         font-size: smaller;
-    }
-
-    .external-link {
-        font-size: x-large;
-        position: absolute;
-        left: 125px;
-        top: 85px;
     }
 
     canvas {
@@ -83,6 +97,15 @@
 
         .price {
             text-align: center;
+        }
+
+        .discounted {
+            text-decoration: line-through;
+        }
+
+        .discount {
+            font-weight: bold;
+            font-size: x-large;
         }
     }
 
@@ -100,15 +123,45 @@
     }
 }
 
-.premium-star {
-    color: #ffbf45;
+.prices {
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 305px;
+
+    .price {
+        font-family: "Consolas", "Menlo", "Courier", monospace;
+        font-size: large;
+        color: $success-color;
+        float: left;
+        min-width: 150px;
+        margin-right: 15px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .latest {
+        font-weight: bold;
+    }
+
+    .premium {
+        color: $warning-color;
+    }
+
+    .discounted {
+        text-decoration: line-through;
+        font-weight: normal;
+    }
+
+    .discount {
+        font-size: x-large;
+        color: $primary-color;
+
+        .percentage {
+            font-weight: bold;
+        }
+    }
 }
 
-.price {
-    font-family: "Consolas", "Menlo", "Courier", monospace;
-    font-size: large;
-    font-weight: bold;
-    color: $primary-color;
-    float: left;
-    width: 150px;
+.premium-star {
+    color: #ffbf45;
 }
