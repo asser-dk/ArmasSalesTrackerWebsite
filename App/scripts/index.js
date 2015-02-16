@@ -47,6 +47,7 @@ function showProduct(productId)
         productModal.find('.pricing-container').empty().html(pricingContent);
         productModal.find('a').attr('href', product.Url);
         productModal.find('.alert-signup .product-id').val(productId);
+        productModal.find('.category span').text(product.Category);
 
         productModal.find('.signup .signed-up-alert-box').hide();
 
@@ -183,6 +184,7 @@ function showProducts(data)
             {
                 result += '<div class="on-sale">On sale!</div>';
             }
+            result += '<div class="category"><i class="fa fa-tag"></i> ' + product.Category + '</div>';
             result += '</div>';
             result += generatePricing(normal, latest);
             result += '</div></li>';
