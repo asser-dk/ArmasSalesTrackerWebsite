@@ -40,24 +40,7 @@
         </ul>
     </section>
 </nav>
-<div id="about-modal" class="reveal-modal" data-reveal>
-    <h2>APB ARMAS sales tracker</h2>
-
-    <p class="lead">Because 1 hour sales are a bitch to keep track of.</p>
-
-    <p>I got fed up with spamming F5 in various one hour sales threads and then figure out I missed the sale that
-        particular item on ARMAS during that one hour sale. The sales tracker gets the latest prices from ARMAS every
-        hour. You can set up an email reminder for
-        a particular item when it goes on sale.</p>
-
-    <p>Please help me and post bugs, feature requests and feedback on
-        <a href="http://github.com/asser-dk/ArmasSalesTrackerWebsite/issues"><i class="fa fa-github"></i> GitHub</a>
-    </p>
-
-    <p class="not-affiliated">Something about not being affiliated with anyone.</p>
-    <i class="close-reveal-modal fa fa-close"></i>
-</div>
-<div id="product-modal" class="product-modal reveal-modal" data-reveal>
+<div id="product-modal" class="reveal-modal product-modal" data-reveal>
     <div class="row header">
         <img class="product-image" src=""/>
 
@@ -65,6 +48,7 @@
             <h2></h2>
 
             <div class="hide on-sale">On sale!</div>
+            <div class="category"><i class="fa fa-tag"></i> <span></span></div>
         </div>
 
         <div class="external-link-container"><a class="external-link" target="_blank"><i
@@ -84,7 +68,7 @@
 
         <p class="time-info"><i class="fa fa-clock-o"></i> From <span class="period-from"></span> to <span
                 class="period-to"></span></p>
-        <canvas id="price-chart" width="700" height="300"></canvas>
+        <canvas id="price-chart" width="600" height="200"></canvas>
         <div class="chart-legend-container"></div>
     </div>
     <div class="row signup">
@@ -121,13 +105,30 @@
     </div>
     <i class="close-reveal-modal fa fa-close"></i>
 </div>
+<div id="about-modal" class="reveal-modal" data-reveal>
+    <h2>APB ARMAS sales tracker</h2>
+
+    <p class="lead">Because 1 hour sales are a bitch to keep track of.</p>
+
+    <p>I got fed up with spamming F5 in various one hour sales threads and then figure out I missed the sale that
+        particular item on ARMAS during that one hour sale. The sales tracker gets the latest prices from ARMAS every
+        hour. You can set up an email reminder for
+        a particular item when it goes on sale.</p>
+
+    <p>Please help me and post bugs, feature requests and feedback on
+        <a href="http://github.com/asser-dk/ArmasSalesTrackerWebsite/issues"><i class="fa fa-github"></i> GitHub</a>
+    </p>
+
+    <p class="not-affiliated">Something about not being affiliated with anyone.</p>
+    <i class="close-reveal-modal fa fa-close"></i>
+</div>
 
 <div class="large-4 columns large-centered search-bar">
     <p class="lead">Search for a product</p>
 
     <form class="search-form" data-abide>
         <div class="row collapse">
-            <div class="small-10 columns">
+            <div class="small-10 columns field">
                 <input type="text" id="search-value" class="search-term-field" pattern="search_term"
                        placeholder="Url, id or name"
                        autocomplete="off" required>
@@ -135,13 +136,13 @@
                     least 3 characters long.
                 </small>
             </div>
-            <div class="small-2 columns">
+            <div class="small-2 columns search-button">
                 <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search</button>
             </div>
         </div>
     </form>
 </div>
-<div class="results row">
+<div class="results columns row large-12">
     <h2>Results for '<span class="search-term"></span>'</h2>
 
     <div class="found-products hide">
@@ -189,6 +190,18 @@
         $('.image-link').magnificPopup({type: 'image'});
         $('.alert-signup').on('valid submit', performAlertSignup);
         $('.search-form').on('valid submit', performSearch);
+
+        // Set max-height the first time
+        $(document).ready(function ()
+        {
+            $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px'); // 100 +10px to keep modal effect visible
+        });
+
+        // Reset max-height after window resize
+        $(window).resize(function ()
+        {
+            $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px');
+        });
     });
 </script>
 </body>

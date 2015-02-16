@@ -47,6 +47,7 @@ function showProduct(productId)
         productModal.find('.pricing-container').empty().html(pricingContent);
         productModal.find('a').attr('href', product.Url);
         productModal.find('.alert-signup .product-id').val(productId);
+        productModal.find('.category span').text(product.Category);
 
         productModal.find('.signup .signed-up-alert-box').hide();
 
@@ -164,6 +165,8 @@ function showProducts(data)
             $('.found-products').slideDown('slow');
         });
 
+        var results = $('.product-results');
+
         for (var i = 0; i < data.length; i++)
         {
             var dataEntry = data[i];
@@ -183,11 +186,12 @@ function showProducts(data)
             {
                 result += '<div class="on-sale">On sale!</div>';
             }
+            result += '<div class="category"><i class="fa fa-tag"></i> ' + product.Category + '</div>';
             result += '</div>';
             result += generatePricing(normal, latest);
             result += '</div></li>';
 
-            $(result).hide().prependTo('.product-results').slideDown('fast').delay(200);
+            $(result).hide().prependTo(results).slideDown('fast').delay(200);
         }
 
         $(document).foundation('tooltip', 'reflow');
@@ -221,9 +225,10 @@ function performSearch(e)
         return;
     }
 
-    var productsModal = $('#products-modal');
+    var results = $('.product-results');
     var text = $('#search-value').val();
-    productsModal.find('.product-results').empty();
+    results.find('.product').fadeOut();
+    results.empty();
 
     var hint = "Text";
 
@@ -246,16 +251,16 @@ function performSearch(e)
     }
 
     $('.search-term').text(text);
-    $('#result-search-value').val(text);
-
     $('.search-bar').addClass('large-12').addClass('to-top');
+    $('.search-bar .field').removeClass('small-11').addClass('small-11');
+    $('.search-bar .search-button').removeClass('small-2').addClass('small-1');
 
     $('.results').slideDown('fast');
 
     $.post('http://api.apbsales.sexyfishhorse.com/products/search',
         JSON.stringify({'Term': text, 'Hint': hint})).done(showProducts).error(showNothingFound);
 
-    $('.product-results').on('click', '.product', function ()
+    results.on('click', '.product', function ()
     {
         showProduct(this.id);
     });
