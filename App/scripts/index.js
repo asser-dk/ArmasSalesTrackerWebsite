@@ -216,7 +216,7 @@ function showProducts(data)
             result += generatePricing(defaultPrice, currentPrice, premiumPrice);
             result += '</div></li>';
 
-            $(result).hide().prependTo(results).slideDown('fast').delay(200);
+            $(result).hide().prependTo(results).slideDown('fast');
         }
 
         $(document).foundation('tooltip', 'reflow');
