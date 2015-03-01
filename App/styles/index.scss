@@ -5,6 +5,10 @@ body {
     background: black url("../images/background.png") no-repeat fixed center;
 }
 
+.reveal-modal {
+    overflow: auto;
+}
+
 .light-text {
     color: $smoke;
 }
