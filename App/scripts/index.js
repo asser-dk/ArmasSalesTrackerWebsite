@@ -63,6 +63,7 @@ function showProduct(productId)
         }
 
         var ctx = $('#price-chart').get(0).getContext("2d");
+        ctx.clearRect(0, 0, 600, 200);
 
         var chartData = {
             labels: timestamps, datasets: [{
@@ -90,6 +91,8 @@ function showProduct(productId)
         var chart = new Chart(ctx).Line(chartData,
             {
                 scaleBeginAtZero: true,
+                bezierCurve:true,
+                bezierCurveTension : 0.3,
                 legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li style=\"color:<%=datasets[i].strokeColor%>\"><i class="fa fa-square"></i> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
             });
 
