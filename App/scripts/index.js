@@ -280,7 +280,7 @@ function performSearch(e)
     $('.search-bar .field').removeClass('small-11').addClass('small-11');
     $('.search-bar .search-button').removeClass('small-2').addClass('small-1');
 
-    $('.results').slideDown('fast');
+    $('.results').delay(700).slideDown('fast');
 
     $.post('http://api.apbsales.sexyfishhorse.com/products/search',
         JSON.stringify({'Term': text, 'Hint': hint})).done(showProducts).error(showNothingFound);
