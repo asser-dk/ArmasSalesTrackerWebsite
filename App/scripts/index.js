@@ -91,8 +91,8 @@ function showProduct(productId)
         var chart = new Chart(ctx).Line(chartData,
             {
                 scaleBeginAtZero: true,
-                bezierCurve:true,
-                bezierCurveTension : 0.3,
+                bezierCurve: true,
+                bezierCurveTension: 0.3,
                 legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li style=\"color:<%=datasets[i].strokeColor%>\"><i class="fa fa-square"></i> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
             });
 
@@ -104,51 +104,46 @@ function showProduct(productId)
     });
 }
 
-function generatePricing(normal, latest)
+function generatePricing(defaultPrice, currentPrice, premiumPrice)
 {
     'use strict';
 
     var result = '<div class="prices">';
 
     // Price
-    var normalPrice = normal.Price;
-    var latestPrice = latest.Price;
 
     result += '<div class="price">';
 
-    if (latestPrice < normalPrice)
+    if (currentPrice < defaultPrice)
     {
-        var percentage = Math.round((1 - (latestPrice / normalPrice)) * 100);
-        result += '<span class="normal discounted">' + normalPrice + ' G1C</span> ';
-        result += '<span class="latest">' + latestPrice + ' G1C</span> ';
+        var percentage = Math.round((1 - (currentPrice / defaultPrice)) * 100);
+        result += '<span class="normal discounted">' + defaultPrice + ' G1C</span> ';
+        result += '<span class="latest">' + currentPrice + ' G1C</span> ';
         result += '<span class="discount">Save <span class="percentage">' + percentage + '</span> %</span>';
     }
     else
     {
-        result += '<span class="normal">' + normalPrice + ' G1C</span> ';
+        result += '<span class="normal">' + defaultPrice + ' G1C</span> ';
     }
 
     result += '</div>';
 
     // Premium
-    if (latest.Premium > 0)
+    if (premiumPrice > 0)
     {
-        var normalPremium = normal.Premium;
-        var latestPremium = latest.Premium;
-
         result += '<div class="price premium">';
         result += '<i class="fa fa-star premium-star has-tip" data-tooltip aria-haspopup="true" title="Premium"></i> ';
 
-        if (latestPrice < normalPrice)
+        var premiumDiscount = Math.round((1 - (premiumPrice / defaultPrice)) * 100);
+
+        if (premiumDiscount > 0 && premiumDiscount !== 20)
         {
-            result += '<span class="normal discounted">' + normalPremium + ' G1C</span> ';
-            var premiumPct = Math.round((1 - (latestPremium / normalPremium)) * 100);
-            result += '<span class="latest">' + latestPremium + ' G1C</span> ';
-            result += '<span class="discount">Save <span class="percentage">' + premiumPct + '</span> %</span>';
+            result += '<span class="latest">' + premiumPrice + ' G1C</span> ';
+            result += '<span class="discount">Save <span class="percentage">' + premiumDiscount + '</span> %</span>';
         }
         else
         {
-            result += '<span class="normal">' + normalPremium + ' G1C</span> ';
+            result += '<span class="normal">' + premiumPrice + ' G1C</span> ';
         }
 
         result += '</div>';
@@ -172,12 +167,23 @@ function showProducts(data)
 
         for (var i = 0; i < data.length; i++)
         {
-            var dataEntry = data[i];
-            var product = dataEntry.Product;
-            var latest = dataEntry.Pricing.Latest;
-            var normal = dataEntry.Pricing.Normal;
-            var timestamp = latest.Timestamp;
-            var onSale = latest.Price < normal.Price || latest.Premium < normal.Premium;
+            var product = data[i];
+            var defaultPrice = product.Prices[0]['Value'];
+            var currentPrice = product.Prices[1]['Value'];
+            var premiumPrice = product.Prices[2]['Value'];
+            var timestamp = product.Prices[1].Timestamp;
+            var onSale = false;
+
+            if (currentPrice < defaultPrice)
+            {
+                onSale = true;
+            }
+            else
+            {
+                var premiumDiscount = Math.round((1 - (premiumPrice / defaultPrice)) * 100);
+
+                onSale = premiumDiscount !== 0 && premiumDiscount !== 20;
+            }
 
             var result = '<li><div class="product" id="' + product.Id + '">';
             result += '<img onload="fadeIn(this)" class="product-image" src="' + product.ImageUrl + '" alt="' +
@@ -191,7 +197,7 @@ function showProducts(data)
             }
             result += '<div class="category"><i class="fa fa-tag"></i> ' + product.Category + '</div>';
             result += '</div>';
-            result += generatePricing(normal, latest);
+            result += generatePricing(defaultPrice, currentPrice, premiumPrice);
             result += '</div></li>';
 
             $(result).hide().prependTo(results).slideDown('fast').delay(200);
