@@ -6,44 +6,31 @@ function showProduct(productId)
 
     $.getJSON('http://api.apbsales.sexyfishhorse.com/products/' + productId).done(function (data)
     {
-        var product = data.Product;
-        var history = data.History;
-        var pricing = data.Pricing;
-        var normal = pricing.Normal;
-        var latest = pricing.Latest;
-        var onSale = latest.Price < normal.Price || latest.Premium < normal.Premium;
+        var product = data;
+        var defaultPrice = product.Prices[0]['Value'];
+        var currentPrice = product.Prices[1]['Value'];
+        var premiumPrice = product.Prices[2]['Value'];
+        var timestamp = product.Prices[1].Timestamp;
+        var onSale = false;
 
-        history = history.reverse();
-        var timestamps = [];
+        if (currentPrice < defaultPrice)
+        {
+            onSale = true;
+        }
+        else
+        {
+            var premiumDiscount = Math.round((1 - (premiumPrice / defaultPrice)) * 100);
 
-        var prices = [];
-        var premiumPrices = [];
+            onSale = premiumDiscount !== 0 && premiumDiscount !== 20;
+        }
 
         var productModal = $('#product-modal');
 
-        for (var i = 0; i < history.length; i++)
-        {
-            var item = history[i];
-            timestamps.push(moment(item.Timestamp).calendar());
-            prices.push(item.Price);
-            premiumPrices.push(item.Premium);
-
-            if (i === 0)
-            {
-                productModal.find('.period-from').text(moment(item.Timestamp).calendar());
-            }
-
-            if (i + 1 === history.length)
-            {
-                productModal.find('.period-to').text(moment(item.Timestamp).calendar());
-            }
-        }
-
-        var pricingContent = generatePricing(normal, latest);
+        var pricingContent = generatePricing(defaultPrice, currentPrice, premiumPrice);
 
         productModal.find('h2').text(product.Title);
         productModal.find('.product-image').attr('src', product.ImageUrl);
-        productModal.find('.last-updated').text(moment(latest.Timestamp).fromNow());
+        productModal.find('.last-updated').text(moment(timestamp).fromNow());
         productModal.find('.pricing-container').empty().html(pricingContent);
         productModal.find('a').attr('href', product.Url);
         productModal.find('.alert-signup .product-id').val(productId);
@@ -62,45 +49,74 @@ function showProduct(productId)
             productModal.find('.signup .unavailable').hide();
         }
 
-        var ctx = $('#price-chart').get(0).getContext("2d");
-        ctx.clearRect(0, 0, 600, 200);
-
-        var chartData = {
-            labels: timestamps, datasets: [{
-                label: 'Non premium price',
-                fillColor: "rgba(67, 172, 106, 0.2)",
-                strokeColor: "rgba(67, 172, 106, 1)",
-                pointColor: "rgba(67, 172, 106, 1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(67, 172, 106, 1)",
-                data: prices
-            },
-                {
-                    label: 'Premium price',
-                    fillColor: "rgba(240, 138, 36, 0.2)",
-                    strokeColor: "rgba(240, 138, 36, 1)",
-                    pointColor: "rgba(240, 138, 36, 1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(240, 138, 36, 1)",
-                    data: premiumPrices
-                }]
-        };
-
-        var chart = new Chart(ctx).Line(chartData,
-            {
-                scaleBeginAtZero: true,
-                bezierCurve: true,
-                bezierCurveTension: 0.3,
-                legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li style=\"color:<%=datasets[i].strokeColor%>\"><i class="fa fa-square"></i> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
-            });
-
-        var legend = chart.generateLegend();
+        $('.load-price-history-spinner').hide();
+        //$('.load-price-history-spinner').show();
+        $('.price-chart').hide();
 
         productModal.foundation('reveal', 'open');
 
-        $('.chart-legend-container').html(legend);
+        //$.getJSON('http://api.apbsales.sexyfishhorse.com/products/' + productId +
+        //'/priceHistory').done(function (history)
+        //{
+        //    var defaultPrices = [];
+        //    var currentPrices = [];
+        //    var premiumPrices = [];
+        //    var timestamps = [];
+        //
+        //    for (var i = 0; i < history.length; i++)
+        //    {
+        //        var item = history[i];
+        //        timestamps.push(moment(item.Timestamp).calendar());
+        //        prices.push(item.Price);
+        //        premiumPrices.push(item.Premium);
+        //
+        //        if (i === 0)
+        //        {
+        //            productModal.find('.period-from').text(moment(item.Timestamp).calendar());
+        //        }
+        //
+        //        if (i + 1 === history.length)
+        //        {
+        //            productModal.find('.period-to').text(moment(item.Timestamp).calendar());
+        //        }
+        //    }
+        //
+        //    var ctx = $('#price-chart').get(0).getContext("2d");
+        //    ctx.clearRect(0, 0, 600, 200);
+        //
+        //    var chartData = {
+        //        labels: timestamps, datasets: [{
+        //            label: 'Non premium price',
+        //            fillColor: "rgba(67, 172, 106, 0.2)",
+        //            strokeColor: "rgba(67, 172, 106, 1)",
+        //            pointColor: "rgba(67, 172, 106, 1)",
+        //            pointStrokeColor: "#fff",
+        //            pointHighlightFill: "#fff",
+        //            pointHighlightStroke: "rgba(67, 172, 106, 1)",
+        //            data: prices
+        //        },
+        //            {
+        //                label: 'Premium price',
+        //                fillColor: "rgba(240, 138, 36, 0.2)",
+        //                strokeColor: "rgba(240, 138, 36, 1)",
+        //                pointColor: "rgba(240, 138, 36, 1)",
+        //                pointStrokeColor: "#fff",
+        //                pointHighlightFill: "#fff",
+        //                pointHighlightStroke: "rgba(240, 138, 36, 1)",
+        //                data: premiumPrices
+        //            }]
+        //    };
+        //
+        //    var chart = new Chart(ctx).Line(chartData,
+        //        {
+        //            scaleBeginAtZero: true,
+        //            bezierCurve: true,
+        //            bezierCurveTension: 0.3,
+        //            legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length;
+        // i++){%><li style=\"color:<%=datasets[i].strokeColor%>\"><i class="fa fa-square"></i>
+        // <%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>' });  var legend =
+        // chart.generateLegend();  $('.chart-legend-container').html(legend);
+        // $('.load-price-history-spinner').fadeOut().delay(300); $('.price-chart').slideDown(); });
     });
 }
 
@@ -293,5 +309,4 @@ function performAlertSignup(e)
         {
             $('.signup .signed-up-alert-box').text('You have been successfully signed up. You will receive an email the next time this product goes on sale.').hide().fadeIn();
         });
-
 }

@@ -5,6 +5,13 @@ body {
     background: black url("../images/background.png") no-repeat fixed center;
 }
 
+.load-price-history-spinner {
+    font-size: xx-large;
+    color: #888888;
+    display: block;
+    text-align: center;
+}
+
 .reveal-modal {
     overflow: auto;
 }
