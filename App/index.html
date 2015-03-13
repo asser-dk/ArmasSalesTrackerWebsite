@@ -124,29 +124,35 @@
     <p class="not-affiliated">Something about not being affiliated with anyone.</p>
     <i class="close-reveal-modal fa fa-close"></i>
 </div>
-<div class="row content-row">
-    <div class="large-4 columns large-centered search-bar">
-        <p class="lead light-text">Search for a product</p>
 
-        <form class="search-form" data-abide>
-            <div class="row collapse">
-                <div class="small-10 columns field">
-                    <input type="text" id="search-value" class="search-term-field" pattern="search_term"
-                           placeholder="Url, id or name"
-                           autocomplete="off" required>
-                    <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which
-                        is at
-                        least 3 characters long.
-                    </small>
-                </div>
-                <div class="small-2 columns search-button">
-                    <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search
-                    </button>
-                </div>
+<div class="large-4 columns large-centered search-bar">
+    <p class="lead light-text">Search for a product</p>
+
+    <form class="search-form" data-abide>
+        <div class="row collapse">
+            <div class="small-10 columns field">
+                <input type="text" id="search-value" class="search-term-field" pattern="search_term"
+                       placeholder="Url, id or name"
+                       autocomplete="off" required>
+                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which is at
+                    least 3 characters long.
+                </small>
             </div>
-        </form>
+            <div class="small-2 columns search-button">
+                <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="columns large-4 large-centered products-on-sale">
+    <div class="content transparent-background">
+        <h2>Products on sale</h2>
+        <ul class="products">
+        </ul>
     </div>
-    <div class="results columns large-12 transparent-background">
+</div>
+<div class="results columns row large-12">
+    <div class="results-content transparent-background">
         <h2>Results for '<span class="search-term"></span>'</h2>
 
         <div class="found-products hide">
@@ -177,11 +183,6 @@
     <h2>Signup successfull</h2>
 </div>
 <script>
-    window.fadeIn = function (obj)
-    {
-        $(obj).fadeIn(1000);
-    };
-
     $(function ()
     {
         $(document).foundation({
@@ -193,23 +194,23 @@
         });
 
         moment.locale('en');
+        $('.products-for-sale').hide();
         $('.results').hide();
         $('.image-link').magnificPopup({type: 'image'});
         $('.alert-signup').on('valid submit', performAlertSignup);
         $('.search-form').on('valid submit', performSearch);
-
-        // Set max-height the first time
-        $(document).ready(function ()
-        {
-            $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px'); // 100 +10px to keep modal effect visible
-        });
-
-        // Reset max-height after window resize
-        $(window).resize(function ()
-        {
-            $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px');
-        });
+        $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px');
     });
+
+    $(window).resize(function ()
+    {
+        $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px');
+    });
+
+    window.fadeIn = function (obj)
+    {
+        $(obj).fadeIn(1000);
+    };
 </script>
 </body>
 </html>
