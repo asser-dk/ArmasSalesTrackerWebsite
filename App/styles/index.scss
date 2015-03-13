@@ -7,6 +7,21 @@ body {
     background: black url("../images/background.png") no-repeat fixed center;
 }
 
+button {
+    overflow: hidden !important;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+.box-background {
+    background-color: $white;
+    border: 1px solid #cccccc;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
 .load-price-history-spinner {
     font-size: xx-large;
     color: #888888;
@@ -20,10 +35,6 @@ body {
 
 .light-text {
     color: $smoke;
-}
-
-.transparent-background {
-    background: rgba(238, 238, 238, 0.75);
 }
 
 .product-image {
@@ -40,17 +51,25 @@ body {
     }
 }
 
+.product, .product-modal {
+    .timestamp, .category, .time-info {
+        color: #646464;
+    }
+}
+
 .product-list {
     list-style-type: none;
     margin-left: 0;
+    border-top: 1px solid rgb(200, 200, 200);
 
     .product {
-        background: rgba(238, 238, 238, 0.5);
         height: 95px;
         padding: 5px;
         position: relative;
         cursor: pointer;
         transition: background 0.2s linear;
+        overflow: hidden;
+        border-bottom: 1px solid rgb(200, 200, 200);
 
         .product-image {
             position: absolute;
@@ -76,17 +95,18 @@ body {
             }
 
             .category {
-                font-size: smaller;
+                font-size: small;
                 position: absolute;
                 left: 5px;
-                top: 35px;
+                top: 30px;
+                white-space: nowrap;
             }
         }
 
         .timestamp {
             float: right;
             margin-right: 5px;
-            font-size: smaller;
+            font-size: small;
             display: inline-block;
         }
 
@@ -98,7 +118,12 @@ body {
     }
 
     .product:hover {
-        background: $info-color;
+        background: $primary-color;
+        color: $white;
+
+        .discount, h3, .category, .timestamp {
+            color: $white;
+        }
     }
 }
 
@@ -174,6 +199,7 @@ body {
         min-width: 150px;
         margin-right: 15px;
         font-weight: bold;
+        line-height: 30px;
     }
 
     .latest {
