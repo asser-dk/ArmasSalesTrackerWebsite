@@ -276,9 +276,7 @@ function performSearch(e)
     }
 
     $('.search-term').text(text);
-    $('.search-bar').addClass('large-12').addClass('to-top');
-    $('.search-bar .field').removeClass('small-11').addClass('small-11');
-    $('.search-bar .search-button').removeClass('small-2').addClass('small-1');
+    $('.search-bar').addClass('large-12');
 
     $('.results').delay(700).slideDown('fast');
 
@@ -309,4 +307,56 @@ function performAlertSignup(e)
         {
             $('.signup .signed-up-alert-box').text('You have been successfully signed up. You will receive an email the next time this product goes on sale.').hide().fadeIn();
         });
+}
+
+function loadProductsOnSale()
+{
+    'use strict';
+    $.getJSON('http://api.apbsales.sexyfishhorse.com/products/frontpage').done(function (data)
+    {
+        if (data)
+        {
+            var list = $('.products-on-sale .products');
+            for (var i = 0; i < data.length; i++)
+            {
+                var product = data[i];
+                var defaultPrice = product.Prices[0]['Value'];
+                var currentPrice = product.Prices[1]['Value'];
+                var premiumPrice = product.Prices[2]['Value'];
+                var timestamp = product.Prices[1].Timestamp;
+                var onSale = false;
+
+                if (currentPrice < defaultPrice)
+                {
+                    onSale = true;
+                }
+                else
+                {
+                    var premiumDiscount = Math.round((1 - (premiumPrice / defaultPrice)) * 100);
+
+                    onSale = premiumDiscount !== 0 && premiumDiscount !== 20;
+                }
+
+                var result = '<li><div class="product" id="' + product.Id + '">';
+                result += '<img onload="fadeIn(this)" class="product-image" src="' + product.ImageUrl + '" alt="' +
+                product.Title + '"/>';
+                result += '<div class="timestamp"><i class="fa fa-clock-o"></i> ' + moment(timestamp).fromNow() + '</div>';
+                result += '<div class="title">';
+                result += '<h3>' + product.Title + '</h3>';
+                result += '<div class="category"><i class="fa fa-tag"></i> ' + product.Category + '</div>';
+                result += '</div>';
+                result += generatePricing(defaultPrice, currentPrice, premiumPrice);
+                result += '</div></li>';
+
+                $(result).hide().appendTo(list).slideDown('fast');
+            }
+
+            $(document).foundation('tooltip', 'reflow');
+
+            list.on('click', '.product', function ()
+            {
+                showProduct(this.id);
+            });
+        }
+    });
 }

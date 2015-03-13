@@ -124,31 +124,27 @@
     <p class="not-affiliated">Something about not being affiliated with anyone.</p>
     <i class="close-reveal-modal fa fa-close"></i>
 </div>
+<div class="row">
+    <div class="large-4 columns large-centered search-bar">
+        <p class="lead light-text">Search for a product</p>
 
-<div class="large-4 columns large-centered search-bar">
-    <p class="lead light-text">Search for a product</p>
-
-    <form class="search-form" data-abide>
-        <div class="row collapse">
-            <div class="small-10 columns field">
-                <input type="text" id="search-value" class="search-term-field" pattern="search_term"
-                       placeholder="Url, id or name"
-                       autocomplete="off" required>
-                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which is at
-                    least 3 characters long.
-                </small>
+        <form class="search-form" data-abide>
+            <div class="row collapse">
+                <div class="small-10 columns field">
+                    <input type="text" id="search-value" class="search-term-field" pattern="search_term"
+                           placeholder="Url, id or name"
+                           autocomplete="off" required>
+                    <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which
+                        is at
+                        least 3 characters long.
+                    </small>
+                </div>
+                <div class="small-2 columns search-button">
+                    <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search
+                    </button>
+                </div>
             </div>
-            <div class="small-2 columns search-button">
-                <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search</button>
-            </div>
-        </div>
-    </form>
-</div>
-<div class="columns large-4 large-centered products-on-sale">
-    <div class="content transparent-background">
-        <h2>Products on sale</h2>
-        <ul class="products">
-        </ul>
+        </form>
     </div>
 </div>
 <div class="results columns row large-12">
@@ -163,7 +159,7 @@
                 price is the latest price it had before it was taken down. Click on an item to learn more about the
                 price
                 history.</p>
-            <ul class="product-results"></ul>
+            <ul class="product-results product-list"></ul>
         </div>
 
         <div class="nothing-found hide">
@@ -177,6 +173,13 @@
                                                           class="image-link">Product
                 id</a> or paste the direct link to the product on ARMAS.</p>
         </div>
+    </div>
+</div>
+<div class="row columns large-4 large-centered products-on-sale">
+    <div class="content transparent-background">
+        <h2>Products on sale</h2>
+        <ul class="products product-list">
+        </ul>
     </div>
 </div>
 <div class="reveal-modal signup-success" data-reveal>
@@ -200,6 +203,8 @@
         $('.alert-signup').on('valid submit', performAlertSignup);
         $('.search-form').on('valid submit', performSearch);
         $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px');
+
+        loadProductsOnSale();
     });
 
     $(window).resize(function ()
