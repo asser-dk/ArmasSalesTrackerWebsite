@@ -13,6 +13,7 @@
     <script src="components/Chart.js/Chart.min.js"></script>
     <script src="components/moment/min/moment-with-locales.min.js"></script>
     <script src="scripts/index.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <nav class="top-bar" data-topbar role="navigation">
@@ -52,27 +53,30 @@
         </div>
 
         <div class="external-link-container"><a class="external-link" target="_blank"><i
-                class="fa fa-external-link"></i>
-            Visit on
-            ARMAS</a></div>
+                class="fa fa-external-link"></i> Visit on ARMAS</a></div>
     </div>
     <div class="row">
-        <h3>Current prices</h3>
+        <h3><i class="fa fa-dollar"></i> Current prices</h3>
 
         <p class="time-info"><i class="fa fa-clock-o"></i> Last updated <span class="last-updated"></span></p>
 
         <div class="pricing-container"></div>
     </div>
-    <div class="row">
+    <div class="row class price-history">
         <h3><i class="fa fa-line-chart"></i> Price history</h3>
 
-        <p class="time-info"><i class="fa fa-clock-o"></i> From <span class="period-from"></span> to <span
-                class="period-to"></span></p>
-        <canvas id="price-chart" width="600" height="200"></canvas>
-        <div class="chart-legend-container"></div>
+        <p class="lead">Coming soon.</p>
+        <i class="load-price-history-spinner fa fa-spin fa-spinner"></i>
+
+        <div class="price-chart">
+            <p class="time-info"><i class="fa fa-clock-o"></i> From <span class="period-from"></span> to <span
+                    class="period-to"></span></p>
+            <canvas id="price-chart" width="600" height="200"></canvas>
+            <div class="chart-legend-container"></div>
+        </div>
     </div>
     <div class="row signup">
-        <h3>Price alert signup</h3>
+        <h3><i class="fa fa-envelope-o"></i> Price alert signup</h3>
 
         <p class="lead">Get an email when this item goes on sale.</p>
 
@@ -112,8 +116,7 @@
 
     <p>I got fed up with spamming F5 in various one hour sales threads and then figure out I missed the sale that
         particular item on ARMAS during that one hour sale. The sales tracker gets the latest prices from ARMAS every
-        hour. You can set up an email reminder for
-        a particular item when it goes on sale.</p>
+        hour. You can set up an email reminder for a particular item when it goes on sale.</p>
 
     <p>Please help me and post bugs, feature requests and feedback on
         <a href="http://github.com/asser-dk/ArmasSalesTrackerWebsite/issues"><i class="fa fa-github"></i> GitHub</a>
@@ -122,59 +125,68 @@
     <p class="not-affiliated">Something about not being affiliated with anyone.</p>
     <i class="close-reveal-modal fa fa-close"></i>
 </div>
+<div class="row">
+    <div class="large-4 columns large-centered search-bar">
+        <p class="lead light-text">Search for a product</p>
 
-<div class="large-4 columns large-centered search-bar">
-    <p class="lead">Search for a product</p>
-
-    <form class="search-form" data-abide>
-        <div class="row collapse">
-            <div class="small-10 columns field">
-                <input type="text" id="search-value" class="search-term-field" pattern="search_term"
-                       placeholder="Url, id or name"
-                       autocomplete="off" required>
-                <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which is at
-                    least 3 characters long.
-                </small>
+        <form class="search-form" data-abide>
+            <div class="row collapse">
+                <div class="small-10 columns field">
+                    <input type="text" id="search-value" class="search-term-field" pattern="search_term"
+                           placeholder="Url, id or name"
+                           autocomplete="off" required>
+                    <small class="error"><i class="fa fa-exclamation-triangle"></i> You must enter a search term which
+                        is at
+                        least 3 characters long.
+                    </small>
+                </div>
+                <div class="small-2 columns search-button">
+                    <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search
+                    </button>
+                </div>
             </div>
-            <div class="small-2 columns search-button">
-                <button type="submit" class="button postfix search-button"><i class="fa fa-search"></i> Search</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 <div class="results columns row large-12">
-    <h2>Results for '<span class="search-term"></span>'</h2>
+    <div class="results-content box-background">
+        <h2>Results for '<span class="search-term"></span>'</h2>
 
-    <div class="found-products hide">
-        <p class="lead">These products were the best matches.</p>
+        <div class="found-products hide">
+            <p class="lead">These products were the best matches.</p>
 
-        <p>The prices are at most an hour old. If any of these products have been removed from ARMAS then the
-            displayed price is the latest price it had before it was taken down. Click on an item to learn more about
-            the
-            price history.</p>
-        <ul class="product-results"></ul>
+            <p>The prices are at most an hour old. If any of these products have been removed from ARMAS then the
+                displayed
+                price is the latest price it had before it was taken down. Click on an item to learn more about the
+                price
+                history.</p>
+            <ul class="product-results product-list"></ul>
+        </div>
+
+        <div class="nothing-found hide">
+            <h3>Oops.</h3>
+
+            <p class="lead">We couldn't find what you were looking for :(</p>
+
+            <p>We couldn't find anything that matched <strong><span class="search-term"></span></strong>.</p>
+
+            <p>Check your spelling or try to enter the <a href="images/productId.png" target="_blank"
+                                                          class="image-link">Product
+                id</a> or paste the direct link to the product on ARMAS.</p>
+        </div>
     </div>
-
-    <div class="nothing-found hide">
-        <h3>Oops.</h3>
-
-        <p class="lead">We couldn't find what you were looking for :(</p>
-
-        <p>We couldn't find anything that matched <strong><span class="search-term"></span></strong>.</p>
-
-        <p>Check your spelling or try to enter the <a href="images/productId.png" target="_blank" class="image-link">Product
-            id</a> or paste the direct link to the product on ARMAS.</p>
+</div>
+<div class="row columns large-4 large-centered products-on-sale">
+    <div class="products-on-sale-content box-background">
+        <h2>Products on sale</h2>
+        <ul class="products product-list">
+        </ul>
     </div>
 </div>
 <div class="reveal-modal signup-success" data-reveal>
     <h2>Signup successfull</h2>
 </div>
 <script>
-    window.fadeIn = function (obj)
-    {
-        $(obj).fadeIn(1000);
-    };
-
     $(function ()
     {
         $(document).foundation({
@@ -186,23 +198,25 @@
         });
 
         moment.locale('en');
+        $('.products-for-sale').hide();
         $('.results').hide();
         $('.image-link').magnificPopup({type: 'image'});
         $('.alert-signup').on('valid submit', performAlertSignup);
         $('.search-form').on('valid submit', performSearch);
+        $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px');
 
-        // Set max-height the first time
-        $(document).ready(function ()
-        {
-            $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px'); // 100 +10px to keep modal effect visible
-        });
-
-        // Reset max-height after window resize
-        $(window).resize(function ()
-        {
-            $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px');
-        });
+        loadProductsOnSale();
     });
+
+    $(window).resize(function ()
+    {
+        $('.reveal-modal').css('max-height', $('html').height() - 110 + 'px');
+    });
+
+    window.fadeIn = function (obj)
+    {
+        $(obj).fadeIn(1000);
+    };
 </script>
 </body>
 </html>
