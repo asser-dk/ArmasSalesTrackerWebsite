@@ -220,6 +220,11 @@ function showProducts(data)
         }
 
         $(document).foundation('tooltip', 'reflow');
+
+        results.on('click', '.product', function ()
+        {
+            showProduct(this.id);
+        });
     }
     else
     {
@@ -280,11 +285,6 @@ function performSearch(e)
 
     $.post('http://api.apbsales.sexyfishhorse.com/products/search',
         JSON.stringify({'Term': text, 'Hint': hint})).done(showProducts).error(showNothingFound);
-
-    results.on('click', '.product', function ()
-    {
-        showProduct(this.id);
-    });
 }
 
 function performAlertSignup(e)
