@@ -174,7 +174,7 @@ function showProducts(data)
     'use strict';
     if (data && data.length > 0)
     {
-        $('.nothing-found').slideUp('fast', function ()
+        $('.nothing-found').slideUp('slow', function ()
         {
             $('.found-products').slideDown('slow');
         });
@@ -216,10 +216,15 @@ function showProducts(data)
             result += generatePricing(defaultPrice, currentPrice, premiumPrice);
             result += '</div></li>';
 
-            $(result).hide().prependTo(results).slideDown('fast');
+            $(result).hide().prependTo(results).slideDown('flow').delay(300);
         }
 
         $(document).foundation('tooltip', 'reflow');
+
+        results.on('click', '.product', function ()
+        {
+            showProduct(this.id);
+        });
     }
     else
     {
@@ -276,17 +281,10 @@ function performSearch(e)
     }
 
     $('.search-term').text(text);
-    $('.search-bar').addClass('large-12');
-
-    $('.results').delay(700).slideDown('fast');
+    $('.results').slideDown('slow');
 
     $.post('http://api.apbsales.sexyfishhorse.com/products/search',
         JSON.stringify({'Term': text, 'Hint': hint})).done(showProducts).error(showNothingFound);
-
-    results.on('click', '.product', function ()
-    {
-        showProduct(this.id);
-    });
 }
 
 function performAlertSignup(e)
@@ -340,7 +338,8 @@ function loadProductsOnSale()
                 var result = '<li><div class="product" id="' + product.Id + '">';
                 result += '<img onload="fadeIn(this)" class="product-image" src="' + product.ImageUrl + '" alt="' +
                 product.Title + '"/>';
-                result += '<div class="timestamp"><i class="fa fa-clock-o"></i> ' + moment(timestamp).fromNow() + '</div>';
+                result += '<div class="timestamp"><i class="fa fa-clock-o"></i> ' + moment(timestamp).fromNow() +
+                '</div>';
                 result += '<div class="title">';
                 result += '<h3>' + product.Title + '</h3>';
                 result += '<div class="category"><i class="fa fa-tag"></i> ' + product.Category + '</div>';
