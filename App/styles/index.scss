@@ -121,7 +121,7 @@ h2 {
         background: $primary-color;
         color: $white;
 
-        .discount, h3, .category, .timestamp {
+        .discount, h3, .category, .timestamp, .on-sale {
             color: $white;
         }
     }
@@ -134,6 +134,7 @@ h2 {
         .product-image {
             float: left;
             margin-right: 10px;
+            border-radius: $product-image-border-radius;
         }
 
         .title {
